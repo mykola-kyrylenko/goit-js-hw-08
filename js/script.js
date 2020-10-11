@@ -8,33 +8,41 @@ const refs = {
   overlay: document.querySelector(".lightbox__content"),
 };
 let currentIndex = 0;
-createGallery();
+
 refs.galleryRef.addEventListener("click", onClickGalleryImg);
 
+// let index = 0;
+function galleryUlTags(gallery, index) {
+  const li = createElement("li");
+  const a = createElement("a");
+  const img = createElement("img");
+  img.setAttribute("src", gallery.preview);
+  img.setAttribute("alt", gallery.description);
+  img.setAttribute("class", "gallery__image");
+  img.setAttribute("data-source", gallery.original);
+  img.setAttribute("data-index", index);
+  a.setAttribute("class", "gallery__link");
+  a.setAttribute("href", gallery.original);
+  li.setAttribute("class", "gallery__item");
+  a.appendChild(img);
+  li.appendChild(a);
+  // index += 1;
+
+  return li;
+}
+// refs.galleryRef.append(...galleryUlTags);
+
+function createElement(name, attrs = {}) {
+  const element = document.createElement(name);
+  for (let key in attrs) {
+    element.setAttribute(key, attrs[key]);
+  }
+  return element;
+}
+
 function createGallery() {
-  let index = 0;
-  const galleryUlTags = gallery.map((gallery) => {
-    const li = document.createElement("li");
-    const a = document.createElement("a");
-    const img = document.createElement("img");
-    img.setAttribute("src", gallery.preview);
-    img.setAttribute("alt", gallery.description);
-    img.setAttribute("class", "gallery__image");
-    img.setAttribute("data-source", gallery.original);
-    img.setAttribute("data-index", index);
-
-    a.setAttribute("class", "gallery__link");
-    a.setAttribute("href", gallery.original);
-
-    li.setAttribute("class", "gallery__item");
-
-    a.appendChild(img);
-    li.appendChild(a);
-    index += 1;
-
-    return li;
-  });
-  refs.galleryRef.append(...galleryUlTags);
+  const layout = gallery.map(galleryUlTags);
+  refs.galleryRef.append(...layout);
 }
 
 function onClickGalleryImg(event) {
@@ -122,3 +130,5 @@ function setOriginalImgAlt(alt) {
 function setOriginalImgIndex(index) {
   refs.originalImg.setAttribute("data-index", index);
 }
+
+createGallery();
